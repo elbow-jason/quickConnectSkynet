@@ -1,0 +1,89 @@
+<html>
+<head>
+  <script src="http://skynet.im/js/skynet.js"></script>
+  <script>
+    var skynetConfig = {
+      "uuid": "0d3a53a0-2a0b-11e3-b09c-ff4de847b2cc",
+      "token": "qirqglm6yb1vpldixflopnux4phtcsor",
+      "protocol": "websocket",
+      "host": "localhost", // optional (defaults to "http://skynet.im")
+      "port": 3000 // optional (defaults to 80)
+    }
+    skynet(skynetConfig, function (e, socket, device) {
+    // skynet(function (e, socket, device) {
+    // skynet({appName:'chris'}, function (e, socket, device) {
+      if (e) throw e
+
+      // Sample SkyNet API calls:
+      socket.emit('status', function(data){
+        console.log('status received');
+        console.log(data);
+      });
+      // Subscribe and unsubscribe to a device's messages and events
+      socket.emit('subscribe', {
+        "uuid": "0d3a53a0-2a0b-11e3-b09c-ff4de847b2cc",
+        "token": "qirqglm6yb1vpldixflopnux4phtcsor"
+      }, function (data) {
+        console.log(data);
+      });
+
+      socket.emit('unsubscribe', {"uuid": "0d3a53a0-2a0b-11e3-b09c-ff4de847b2cc"}, function (data) {
+        console.log(data);
+      });
+
+      // Send and receive messages
+      socket.emit('message', {
+        "devices": "*",
+        "payload": {
+        "skynet":"online"
+      }}, function(data){
+        console.log(data);
+      });
+      socket.on('message', function(message){
+        console.log('message received', message);
+      });
+
+
+      // Get the status of the SkyNet network
+      socket.emit('status', function(data){
+        console.log('status received');
+        console.log(data);
+      });
+
+      // Register device
+      socket.emit('register', {
+        "type":"drone"
+      }, function (data) {
+        console.log(data);
+      });
+
+
+      // Update device
+      socket.emit('update', {
+        "uuid": "0d3a53a0-2a0b-11e3-b09c-ff4de847b2cc",
+        "token": "qirqglm6yb1vpldixflopnux4phtcsor",
+        "armed":true
+      }, function (data) {
+        console.log(data);
+      });
+
+      // WhoAmI?
+      socket.emit('whoami', {"uuid":"0d3a53a0-2a0b-11e3-b09c-ff4de847b2cc"}, function (data) {
+        console.log(data);
+      });
+
+      // Receive last 10 device events
+      socket.emit('events', {
+        "uuid": "0d3a53a0-2a0b-11e3-b09c-ff4de847b2cc",
+        "token": "qirqglm6yb1vpldixflopnux4phtcsor"
+      }, function (data) {
+        console.log(data);
+      });
+
+    });
+  </script>
+</head>
+<body>
+  SkyNet client-side app
+</body>
+</html>
